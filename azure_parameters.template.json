@@ -1,0 +1,20 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "adminUsername": {
+      "value": "vm-admin"
+    },
+    "adminPassword": {
+      "value": "INSERT_SECURE_PASSWORD"
+    },
+    "vmName": {
+      "value": "DUMMY_VMNAME"
+    },
+    "vmSize": {
+      "value": "DUMMY_VMSIZE"
+    },
+    "location": {
+      "value" : "DUMMY_LOCATION"
+  }
+}

@@ -1,0 +1,109 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "baseUrl": {
+            "type": "string",
+            "metadata": {
+                "description": "The base URL for dependent assets"
+            },
+            "defaultValue": ""
+        },
+        "adminUsername": {
+            "type": "string",
+            "metadata": {
+                "description": "Username for the Virtual Machine."
+            }
+        },
+        "adminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Password for the Virtual Machine."
+            }
+        },
+        "vmName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name Prefix for the Virtual Machine."
+            }
+        },
+        "vmSize": {
+            "type": "string",
+            "defaultValue": "Standard_NC6",
+            "metadata": {
+                "description": "Size for the Virtual Machine."
+            }
+        },
+        "location": {
+            "type": "string",
+            "metadata": {
+                "description": "The region to deploy the resources into"
+            },
+	   "defaultValue" : "westeurope"
+        },
+        "storageAccountType": {
+            "type": "string",
+            "metadata": {
+                "description": "The type of the Storage Account created"
+            },
+            "defaultValue": "Standard_LRS"
+        },
+        "dsvmAssetsUrl": {
+            "type": "string",
+            "metadata": {
+                "description": "The base URL for dependent assets"
+            },
+            "defaultValue": "https://deeplearningvmstg.blob.core.windows.net/assets/"
+        }
+    },
+    "variables": {
+        "apiVersion": "2015-06-15",
+	"storageAccountName" : "[concat(uniquestring(resourceGroup().id), 'benchvm')]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2016-02-01",
+            "name": "linkedTemplate",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "incremental",
+                "templateLink": {
+                    "uri": "[concat('https://deeplearningvmstg.blob.core.windows.net/assets/','UbuntuLinux', '.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "dsvmAssetsUrl": {
+                        "value": "https://deeplearningvmstg.blob.core.windows.net/assets/"
+                    },
+                    "adminUsername": {
+                        "value": "[parameters('adminUsername')]"
+                    },
+                    "adminPassword": {
+                        "value": "[parameters('adminPassword')]"
+                    },
+                    "vmName": {
+                        "value": "[parameters('vmName')]"
+                    },
+                    "vmSize": {
+                        "value": "[parameters('vmSize')]"
+                    },
+                    "location": {
+                        "value": "[parameters('location')]"
+                    },
+                    "storageAccountName": {
+                        "value": "[variables('storageAccountName')]"
+                    },
+                    "storageAccountType": {
+                        "value": "[parameters('storageAccountType')]"
+                    }
+                }
+            }
+        }
+    ],
+    "outputs": {
+        "DataScienceVmUrl": {
+            "type": "string",
+            "value": "[concat('https://ms.portal.azure.com/#resource/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
+        }
+    }
+}
