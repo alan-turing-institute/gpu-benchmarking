@@ -5,9 +5,47 @@ Benchmarking GPUs on Azure
 
 ### Work in progress - this will eventually contain deployment and setup scripts to enable VMs to be deployed on the cloud and various deep learning benchmarks to be run on them.
 
+### How to deploy a new Deep Learning VM
+
+The deployment configuration uses two json files:
+azure_parameters.json
+azure_template.json
+
+In this github repo, there is a template for the former called
+azure_parameters.template.json - you should cp this file
+to azure_parameters.json, and replace the text INSERT_SECURE_PASSWORD with a
+secure admin password.
+
+Then, run the following command:
+
+./deploy.sh -i <subscription> -g <resource_group> -n <vm_name> -l <location> -s <vm_size>
+
+Some possible values for some of these might be e.g. "westeurope" for location,
+and "Standard_NC6" for vm_size (there is info about the different sizes at
+https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-gpu
+If the deployment fails with an error code "MarketplacePurchaseEligibilityFailed", go to the section below.
+
+Once the VM is built, you can navigate to it through the azure portal:
+login to
+https://portal.azure.com
+then click on "Virtual Machines" on the left.  You can filter by subscription
+at the top of the page.
+Once you have found and clicked on your new VM, you will go to its dashboard
+page, and here you can edit its "DNS name" to make it something more memorable.
+
+You can also start the VM running from here, or you can do this from the command line with
+az vm start --resource-group <resource_group> --name <vm_name>
+
+
+You can then login to it:
+ssh -l vm-admin <DNS name>
+using the admin password from azure_parameters.json
 
 
 
+
+
+### Common problem for a new subscription:
 
 The following error
 ```json
