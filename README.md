@@ -18,7 +18,7 @@ secure admin password.
 
 Then, run the following command:
 
-./deploy.sh -i <subscription> -g <resource_group> -n <vm_name> -l <location> -s <vm_size>
+`./deploy.sh -i <subscription> -g <resource_group> -n <vm_name> -l <location> -s <vm_size>`
 
 Some possible values for some of these might be e.g. "westeurope" for location,
 and "Standard_NC6" for vm_size (there is info about the different sizes at
@@ -34,11 +34,11 @@ Once you have found and clicked on your new VM, you will go to its dashboard
 page, and here you can edit its "DNS name" to make it something more memorable.
 
 You can also start the VM running from here, or you can do this from the command line with
-az vm start --resource-group <resource_group> --name <vm_name>
+`az vm start --resource-group <resource_group> --name <vm_name>`
 
 
 You can then login to it:
-ssh -l vm-admin <DNS name>
+`ssh -l vm-admin <DNS name>`
 using the admin password from azure_parameters.json
 
 
